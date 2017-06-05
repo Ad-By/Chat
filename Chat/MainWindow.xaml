@@ -38,6 +38,36 @@
                                         <!-- Window Content -->
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
+                                    
+                                    <!-- Title Bar-->
+                                    <Grid Grid.Column="0" Panel.ZIndex="1">
+                                        <Grid.ColumnDefinitions>
+                                            <!--Icon-->
+                                            <ColumnDefinition Width="Auto"/>
+                                            <!--Title-->
+                                            <ColumnDefinition Width="*"/>
+                                            <!--Window Button-->
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <!--Icon-->
+                                        <Button Style="{StaticResource SystemIconButton}" WindowChrome.IsHitTestVisibleInChrome="True" Command="{Binding MenuCommand}">
+                                            <Image Source= "/Images/Logo/logo-small.png"/>
+                                        </Button>
+                                        
+                                        <!--Title text-->
+                                        <Viewbox Grid.Column="1" Margin="0">
+                                            <TextBlock Style="{StaticResource HeaderText}" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title, FallbackValue='Welcome, friend!'}"/>
+                                        </Viewbox>
+                                        
+                                        <!--Window Buttons-->
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                            <Button Style="{StaticResource WindowControlButton}" Content="_"/>
+                                            <Button Style="{StaticResource WindowControlButton}" Content="[ ]"/>
+                                            <Button Style="{StaticResource WindowControlButton}" Content="X"/>
+                                        </StackPanel>
+                                        
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Border>

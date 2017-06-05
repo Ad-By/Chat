@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Chat
 {
@@ -56,7 +57,19 @@ namespace Chat
 
         public int TitleHeight { get; set; } = 42;
 
-        public GridLength TitleHeightGridLength { get { return new GridLength(TitleHeight); } }
+        public GridLength TitleHeightGridLength { get { return new GridLength(TitleHeight + ResizeBorder); } }
+
+        #endregion
+
+        #region
+
+        public ICommand MinimizeCommand { get; set; }
+
+        public ICommand MaximizeCommand { get; set; }
+
+        public ICommand CloseCommand { get; set; }
+
+        public ICommand MenuCommand { get; set; }
 
         #endregion
 
@@ -75,9 +88,24 @@ namespace Chat
                 OnPropertyChanged(nameof(WindowRadius));
                 OnPropertyChanged(nameof(WindowCornerRadius));
             };
+
+            //Create commands
+            MinimizeCommand = new RelayCommand(() => _window.WindowState = WindowState.Minimized);
+            MaximizeCommand = new RelayCommand(() => _window.WindowState ^= WindowState.Maximized);
+            MaximizeCommand = new RelayCommand(() => _window.Close());
+            MenuCommand = new RelayCommand(() => SystemCommands.ShowSystemMenu(_window, GetMousePositiion()));
         }
 
         #endregion
 
+        #region
+
+        private Point GetMousePositiion()
+        {
+            var position = Mouse.GetPosition(_window);
+            return new Point(position.X + _window.Left, position.Y + _window.Top);
+        }
+
+        #endregion
     }
 }
