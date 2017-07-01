@@ -23,9 +23,15 @@ namespace Chat
 
         #region Properties
 
+        public double WindowMinimumWidth { get; set; } = 400;
+
+        public double WindowMinimumHeight { get; set; } = 400;
+
         public int ResizeBorder { get; set; } = 6;
 
         public Thickness ResizeBorderThickness { get { return new Thickness(ResizeBorder + OuterMarginSize); } }
+
+        public Thickness InnerContentPadding { get { return new Thickness(ResizeBorder); } }
 
         public int OuterMarginSize
         {
@@ -92,13 +98,16 @@ namespace Chat
             //Create commands
             MinimizeCommand = new RelayCommand(() => _window.WindowState = WindowState.Minimized);
             MaximizeCommand = new RelayCommand(() => _window.WindowState ^= WindowState.Maximized);
-            MaximizeCommand = new RelayCommand(() => _window.Close());
+            CloseCommand = new RelayCommand(() => _window.Close());
             MenuCommand = new RelayCommand(() => SystemCommands.ShowSystemMenu(_window, GetMousePositiion()));
+
+            //Fix window resize issue
+            var resizer = new WindowResizer(_window);
         }
 
         #endregion
 
-        #region
+        #region Methods
 
         private Point GetMousePositiion()
         {
