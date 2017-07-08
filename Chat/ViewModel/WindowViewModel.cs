@@ -18,6 +18,7 @@ namespace Chat
         private Window _window;
         private int _outerMarginSize = 10;
         private int _windowRadius = 10;
+        private WindowDockPosition _dockPosition = WindowDockPosition.Undocked;
 
         #endregion
 
@@ -27,17 +28,19 @@ namespace Chat
 
         public double WindowMinimumHeight { get; set; } = 400;
 
-        public int ResizeBorder { get; set; } = 6;
+        public bool Borderless => (_window.WindowState == WindowState.Maximized || _dockPosition != WindowDockPosition.Undocked);
+
+        public int ResizeBorder { get { return Borderless ? 0 : 6; } }
 
         public Thickness ResizeBorderThickness { get { return new Thickness(ResizeBorder + OuterMarginSize); } }
 
-        public Thickness InnerContentPadding { get { return new Thickness(ResizeBorder); } }
+        public Thickness InnerContentPadding { get; set; } = new Thickness(0);
 
         public int OuterMarginSize
         {
             get
             {
-                return _window.WindowState == WindowState.Maximized ? 0 : _outerMarginSize;
+                return Borderless ? 0 : _outerMarginSize;
             }
             set
             {
@@ -65,9 +68,11 @@ namespace Chat
 
         public GridLength TitleHeightGridLength { get { return new GridLength(TitleHeight + ResizeBorder); } }
 
+        public ApplicationPage CurrentPage { get; set; } = ApplicationPage.Login;
+
         #endregion
 
-        #region
+        #region Commands
 
         public ICommand MinimizeCommand { get; set; }
 
